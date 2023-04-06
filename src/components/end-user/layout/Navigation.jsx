@@ -1,19 +1,5 @@
 import React, { useContext, useState, useRef } from 'react'
-import {
-  Box,
-  Flex,
-  Container,
-  Heading,
-  ButtonGroup,
-  Button,
-  Text,
-  Image,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Icon,
-} from '@chakra-ui/react'
+import { Box, Flex, Button, Text, Icon } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { ShortContainer } from '@components/end-user/wrappers'
 
@@ -21,7 +7,6 @@ import { SiweMessage } from 'siwe'
 import { useAccount, useConnect, useNetwork, useSignMessage, useDisconnect } from 'wagmi'
 
 import { InjectedConnector } from 'wagmi/connectors/injected'
-import Link from 'next/link'
 import { RoadmapLogo } from '@components/shared/Logo'
 import NextLink from 'next/link'
 import { AppContext, BURN_STATE, FORGE_STATE, MINT_STATE } from '@context/AppContext'
