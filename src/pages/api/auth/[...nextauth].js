@@ -71,7 +71,6 @@ export function getAuthOptions(req) {
           type: 'text',
         },
       },
-      name: 'Ethereum',
     }),
   ];
 

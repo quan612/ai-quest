@@ -75,9 +75,10 @@ const ForgeBoard = () => {
             <Flex gap="24px">
               {Array(3)
                 .fill(null)
-                .map(() => {
+                .map((index) => {
                   return (
                     <Box
+                      key={index}
                       w="240px"
                       h="240px"
                       __css={{
@@ -214,9 +215,9 @@ const OrbToBurn = ({ goBack, goNext }) => {
           <SimpleGrid columns="2" gap="24px" w="100%" h="100%" minH="100%">
             {Array(4)
               .fill(null)
-              .map((a) => {
+              .map((index) => {
                 return (
-                  <GridItem colSpan={1}>
+                  <GridItem colSpan={1} key={index}>
                     <Box
                       border="2px solid rgba(255, 255, 255, 0.16)"
                       borderRadius={'10px'}

@@ -132,7 +132,7 @@ const Ranking = () => {
 
         {currentRecords.map((r, index) => {
           return (
-            <Flex position="relative" h="auto">
+            <Flex position="relative" h="auto" key={index}>
               <RankingItemSvg />
               <Flex
                 position="absolute"
