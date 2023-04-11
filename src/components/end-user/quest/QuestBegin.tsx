@@ -99,11 +99,14 @@ const startMessages: ChatGPTMessage[] = [
 
 
 const QuestInProgress = ({ onCompleted }) => {
- const [progress, progressSet] = useState(10)
+ const [progress, progressSet] = useState(0)
   const [messages, setMessages] = useState<ChatGPTMessage[]>(startMessages)
 
   const [loading, setLoading] = useState(false)
   const [cookie, setCookie] = useCookies([COOKIE_NAME])
+  const [answer, answerSet] = useState('')
+
+
 
   useEffect(() => {
     if (!cookie[COOKIE_NAME]) {
@@ -116,6 +119,7 @@ const QuestInProgress = ({ onCompleted }) => {
   // send message to API /api/chat endpoint
   const sendMessage = async (message: string) => {
     setLoading(true)
+
     const newMessages = [...messages, { role: 'user', content: message } as ChatGPTMessage]
     // setMessages(newMessages) // to not show existing answer
     const last10messages = newMessages.slice(-10) // remember last 10 messages
@@ -156,6 +160,7 @@ const QuestInProgress = ({ onCompleted }) => {
 
         const newProgress = progress + 10;
         progressSet(newProgress)
+        answerSet('')
         setLoading(false)
       }
     } catch (err) {
@@ -167,7 +172,7 @@ const QuestInProgress = ({ onCompleted }) => {
     }
   }
 
-  const [answer, answerSet] = useState('')
+
 
   const handleOnChange = (e) => {
     answerSet(e.target.value)
@@ -180,8 +185,12 @@ const QuestInProgress = ({ onCompleted }) => {
         <Input
           variant={'main'}
           type="text"
+
+          value={answer || ''}
+       
           placeholder="Type your answer"
-          onChange={debounce(handleOnChange, 300)}
+          // onChange={debounce(handleOnChange, 300)}
+          onChange={handleOnChange}
           maxLength={150}
         />
         <Flex ml="auto" color="whiteAlpha.300">
@@ -192,11 +201,10 @@ const QuestInProgress = ({ onCompleted }) => {
       <Button
         w={'200px'}
         onClick={() => {
-          if(progress === 30){
+          if(progress === 50){
             onCompleted()
           }else{
             sendMessage(answer)
-          answerSet('')
           }
           
         }}
