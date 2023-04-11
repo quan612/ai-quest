@@ -6,15 +6,15 @@ import { Heading2XL, HeadingLg, TextXL } from '@components/shared/Typography'
 import { useRouter } from 'next/router'
 import QuestWrapper from '../shared/QuestWrapper'
 
-import { debounce } from 'util/index'
+import QuestBegin from './QuestBegin'
 
 const BEGIN = 0
-const QUEST_STARTED = 1
-const QUEST_SUBMITTED = 2
-const CLAIMED_TOKEN = 3
+const QUEST_BEGIN = 1
+const QUEST_SUBMITTED = 3
+const CLAIMED_TOKEN = 4
 
-const QuestDetals = ({ session }) => {
-  const [view, viewSet] = useState(QUEST_STARTED)
+const QuestDetails = ({ session }) => {
+  const [view, viewSet] = useState(QUEST_BEGIN)
   const router = useRouter()
 
   // const {
@@ -22,6 +22,10 @@ const QuestDetals = ({ session }) => {
   //   nftOwnQuestModal,
   //   questSelected,
   // } = useContext(UserQuestContext)
+
+  const onBeginQuest = useCallback(() => {
+    viewSet(QUEST_SUBMITTED)
+  })
 
   const onSubmitQuest = useCallback(() => {
     viewSet(QUEST_SUBMITTED)
@@ -57,7 +61,7 @@ const QuestDetals = ({ session }) => {
         alignItems="center"
         h="100%"
       >
-        {view === QUEST_STARTED && <QuestStartedFrame onSubmitQuest={onSubmitQuest} />}
+        {view === QUEST_BEGIN && <QuestBegin onSubmitQuest={onSubmitQuest} />}
         {view === QUEST_SUBMITTED && <QuestCompleted onClaimToken={onClaimToken} />}
         {view === CLAIMED_TOKEN && <ClaimedTokenFrame />}
       </Flex>
@@ -67,60 +71,7 @@ const QuestDetals = ({ session }) => {
   )
 }
 
-export default QuestDetals
-
-const PROGRESS_0 = 33
-const PROGRESS_1 = 100
-const QuestStartedFrame = ({ onSubmitQuest }) => {
-  const [progress, progressSet] = useState(PROGRESS_0)
-  const [answer, answerSet] = useState('')
-
-  const handleOnChange = (e) => {
-    answerSet(e.target.value)
-  }
-
-  return (
-    <QuestWrapper>
-      <Text size="lg" color="orange.400" textAlign={'center'}>
-        You wake up in a cave. It is dark and you have no idea how you arrived here. You look ahead
-        of you and see dimly lit tunnels ahead of you. Left, Right or Straight ahead. What do you
-        choose?
-      </Text>
-      <Flex w="100%" direction={'column'} gap="0.25rem">
-        <Input
-          variant={'main'}
-          type="text"
-          placeholder="Type your answer"
-          onChange={debounce(handleOnChange, 300)}
-          maxLength="150"
-        />
-        <Flex ml="auto" color="whiteAlpha.300">
-          {answer?.length || 0}/150
-        </Flex>
-      </Flex>
-
-      {progress === PROGRESS_0 && (
-        <Button
-          w={{ base: '192px', md: '200px' }}
-          onClick={() => {
-            console.log('answer', answer)
-            progressSet(PROGRESS_1)
-          }}
-          variant="orange"
-        >
-          SUBMIT
-        </Button>
-      )}
-      {progress === PROGRESS_1 && (
-        <Button w={{ base: '192px', md: '296px' }} onClick={onSubmitQuest} variant="orange">
-          COMPLETE QUEST
-        </Button>
-      )}
-
-      <Progress value={progress} w="100%" transition={'0.5s'} />
-    </QuestWrapper>
-  )
-}
+export default QuestDetails
 
 const QuestCompleted = ({ onClaimToken }) => {
   return (
@@ -139,6 +90,7 @@ const QuestCompleted = ({ onClaimToken }) => {
 }
 
 const ClaimedTokenFrame = () => {
+  const router = useRouter()
   return (
     <QuestWrapper>
       <Heading2XL>Tokens Claimed</Heading2XL>
@@ -159,7 +111,7 @@ const ClaimedTokenFrame = () => {
         </Button>
         <Button
           w={{ base: '192px', md: '240px' }}
-          onClick={() => console.log('view may token')}
+          onClick={() => router.push('/')}
           variant="orange"
         >
           VIEW MY TOKENS

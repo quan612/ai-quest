@@ -10,6 +10,7 @@ import {
   FORGE_STATE,
   MINT_END,
   MINT_STATE,
+  PENDING_STATE,
 } from '@context/AppContext'
 
 export const Timer = () => {
@@ -17,7 +18,7 @@ export const Timer = () => {
   const [timeLeft, setTimeLeft] = useState(false)
 
   const getTimerText = useCallback(() => {
-    switch (appState) {
+    switch (appState.name) {
       case MINT_STATE:
         return 'Open Mint Ends In'
       case BURN_STATE:
@@ -25,25 +26,14 @@ export const Timer = () => {
       case FORGE_STATE:
         return 'Permanence Window Ends In'
       default:
-        return ''
+        return 'Pending'
     }
   }, [appState])
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      switch (appState) {
-        case MINT_STATE:
-          setTimeLeft(getTimeLeft(MINT_END))
-          break
-        case BURN_STATE:
-          setTimeLeft(getTimeLeft(BURN_END))
-          break
-        case FORGE_STATE:
-          setTimeLeft(getTimeLeft(FORGE_END))
-          break
-        default:
-          setTimeLeft(getTimeLeft(FORGE_END))
-      }
+      if (appState.name !== PENDING_STATE && appState.expired !== '')
+        setTimeLeft(getTimeLeft(appState.expired))
     }, 1000)
     return () => clearTimeout(timer)
   })

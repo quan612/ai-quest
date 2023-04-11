@@ -21,16 +21,16 @@ function Home({ session }) {
 
   return (
     <>
-      {appState === PENDING_STATE && (
+      {appState.name === PENDING_STATE && (
         <Loading />
       )}
-      {appState === MINT_STATE && (
+      {appState.name === MINT_STATE && (
         <MintBoardComponent />
       )}
-      {appState === BURN_STATE && (
+      {appState.name === BURN_STATE && (
         <BurnBoardComponent />
       )}
-      {appState === FORGE_STATE && (
+      {appState.name === FORGE_STATE && (
         <ForgeBoardComponent />
       )}
     </>

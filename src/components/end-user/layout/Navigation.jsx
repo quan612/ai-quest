@@ -39,7 +39,7 @@ export default function Navigation() {
           <RoadmapLogo />
         </Flex>
         <Flex className="nav-items" flex="55%" align={'center'} justify="space-between">
-          {appState === MINT_STATE && (
+          {appState.name === MINT_STATE && (
             <>
               <NextLink href="/">
                 <Text
@@ -61,7 +61,7 @@ export default function Navigation() {
               </NextLink>
             </>
           )}
-          {appState === BURN_STATE && (
+          {appState.name === BURN_STATE && (
             <>
               <NextLink href="/">
                 <Text
@@ -83,7 +83,7 @@ export default function Navigation() {
               </NextLink>
             </>
           )}
-          {appState === FORGE_STATE && (
+          {appState.name === FORGE_STATE && (
             <>
               <NextLink href="/">
                 <Text

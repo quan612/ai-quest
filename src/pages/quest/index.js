@@ -13,10 +13,10 @@ function QuestPage({ session }) {
 
   return (
     <>
-      {appState === PENDING_STATE && (
+      {appState.name === PENDING_STATE && (
         <Loading />
       )}
-      {appState === MINT_STATE && (
+      {appState.name === MINT_STATE && (
         <UserQuestProvider>
           <QuestBoard />
         </UserQuestProvider>
