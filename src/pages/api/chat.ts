@@ -26,7 +26,11 @@ const handler = async (req: Request): Promise<Response> => {
       AI assistant is a big fan of Nex.js.`,
     },
   ]
-  messages.push(...body?.messages)
+  const bodyMessages = body?.messages
+  if(bodyMessages){
+    messages.push(...bodyMessages)
+  }
+  
 
   const requestHeaders: Record<string, string> = {
     'Content-Type': 'application/json',
