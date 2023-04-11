@@ -20,7 +20,7 @@ const QUEST_INPROGRESS = 33
 const PROGRESS_1 = 100
 
 const QuestBegin = ({ onSubmitQuest }) => {
-  const [progress, progressSet] = useState(QUEST_START)
+  const [progress, progressSet] = useState(QUEST_INPROGRESS) // QUEST_INPROGRESS  QUEST_START
 
   return (
     <QuestWrapper>
