@@ -1,6 +1,7 @@
 import React, { useRef, useContext, useState, useCallback } from 'react'
-import { Box, Flex, Text, Heading, Button } from '@chakra-ui/react'
-import { Heading2XL, Text2XL } from '@components/shared/Typography'
+import { Box, Flex, Text, Heading, Button, Image } from '@chakra-ui/react'
+import { Heading2XL, HeadingLg, HeadingXL, Text2XL } from '@components/shared/Typography'
+import VerticalAnimation from '../shared/VerticalAnimation'
 
 const Mint = ({ onMintSucceed }) => {
   const handleMint = useCallback(() => {
@@ -12,6 +13,7 @@ const Mint = ({ onMintSucceed }) => {
       <Heading2XL>The Roadmap of Your Life</Heading2XL>
       <Text2XL>The first free NFT minting adventure powered completely by AI.</Text2XL>
       <MintFrame onMint={handleMint} />
+      <VerticalAnimation />
     </>
   )
 }
@@ -33,10 +35,6 @@ const MintFrame = ({ onMint }) => {
     tokenSet(newToken)
   }, [token])
 
-  const setMin = useCallback(() => {
-    tokenSet(0)
-  }, [])
-
   const setMax = useCallback(() => {
     tokenSet(10)
   }, [])
@@ -55,9 +53,9 @@ const MintFrame = ({ onMint }) => {
         h="100%"
         gap="24px"
       >
-        <Heading size="lg" color="orange.400">
+        <HeadingLg color="orange.400" textShadow="0px 0px 15px #ED8936">
           Choose token quantity
-        </Heading>
+        </HeadingLg>
         <Flex gap="48px">
           <Flex direction="column" gap="1rem">
             <Flex direction="column" position="relative" className="token-quantity">
@@ -92,17 +90,9 @@ const MintFrame = ({ onMint }) => {
                 color="whiteAlpha.500"
                 _hover={{ color: 'orange.400' }}
                 cursor={'pointer'}
-                onClick={setMin}
-              >
-                MIN
-              </Text>
-              <Text
-                color="whiteAlpha.500"
-                _hover={{ color: 'orange.400' }}
-                cursor={'pointer'}
                 onClick={setMax}
               >
-                MAX
+                MINT MAX
               </Text>
             </Flex>
           </Flex>

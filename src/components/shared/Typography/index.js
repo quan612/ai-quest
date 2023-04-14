@@ -32,7 +32,7 @@ export const HeadingSm = (props) => {
 
 export const HeadingLg = (props) => {
   return (
-    <Heading size="md" {...props}>
+    <Heading size="lg" {...props}>
       {props.children}
     </Heading>
   )

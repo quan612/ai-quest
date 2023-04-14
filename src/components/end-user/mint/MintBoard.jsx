@@ -6,6 +6,7 @@ import { Timer } from '../shared/Timer'
 import { useRouter } from 'next/router'
 import Mint from './Mint'
 import { Heading2XL, Text2XL } from '@components/shared/Typography'
+import VerticalAnimation from '../shared/VerticalAnimation'
 
 const MINTABLE = 0
 const MINTED = 1
@@ -33,7 +34,7 @@ const MintBoard = () => {
       backgroundRepeat="no-repeat"
     >
       <Flex
-        w={'container.lg'}
+        w={{ base: '80%', xl: 'container.lg' }}
         maxW="container.lg"
         direction="column"
         gap="48px"
@@ -46,7 +47,7 @@ const MintBoard = () => {
           <>
             <Heading2XL>You have minted 10 tokens</Heading2XL>
             <Text2XL>
-              Want more tokens? Earn 10 tokens per day by playing our AI generated adventure quests!
+              It is time to undertake the first quest and begin to earn more Tokens.
             </Text2XL>
             <Button
               w={{ base: '192px', md: '296px' }}
@@ -55,6 +56,7 @@ const MintBoard = () => {
             >
               PLAY QUEST
             </Button>
+            <VerticalAnimation />
           </>
         )}
       </Flex>

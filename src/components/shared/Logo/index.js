@@ -1,9 +1,10 @@
 import { Box, Flex, Icon, Link, Text } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
 
 export const RoadmapLogo = () => {
+  const router = useRouter()
   return (
-    // <Link ' isExternal>READMAP.ART</Link>
-    <Text color="orange.400" fontSize="3xl">ROADMAP.ART</Text>
+    <Text color="orange.400" fontSize="3xl" cursor={"pointer"} onClick={() => router.push("/")}>ROADMAP.ART</Text>
   )
 }
 export const RiftlyLogoWhiteText = () => {

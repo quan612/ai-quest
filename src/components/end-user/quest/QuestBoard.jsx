@@ -42,8 +42,8 @@ const QuestBoard = () => {
         <QuestWrapper>
           <Heading2XL>Begin Your Quest</Heading2XL>
           <TextXL>
-            Quests are available once every 24 hours and you will be rewarded 10 tokens per quest.
-            All actions will impact your final NFT and cannot be undone, tread carefully.
+            Quests are available once every 24 hours. You will be rewarded 10 Tokens per quest. All
+            actions will have an impact on your final Art, and cannot be undone. Tread carefully.
           </TextXL>
           <Button w={{ base: '192px', md: '240px' }} onClick={onBeginQuest} variant="orange">
             BEGIN QUEST
