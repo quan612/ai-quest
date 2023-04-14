@@ -53,7 +53,8 @@ const ScrollableText = ({ message, ...props }) => {
     <Flex
       position="relative"
       w="100%"
-      h="35%"
+      h="30%"
+      maxH="30%"
       flexDirection={'column'}
       className="scrollable-quest-text"
       {...props}
@@ -62,11 +63,25 @@ const ScrollableText = ({ message, ...props }) => {
         flexDirection={'column'}
         w="100%"
         h="100%"
-        justify={'center'}
+        // justify={'center'}
         overflow={'auto'}
-        sx={{
+        __css={{
           '::-webkit-scrollbar': {
-            display: 'none',
+            // display: 'none',
+            width: '6px',
+         
+          },
+          '&::-webkit-scrollbar-track': {
+            background: '#123028',
+            border:
+              '3px solid transparent' /* Use your background color to overlap the behind layer, making track thinner than thumb */,
+            backgroundClip: 'content-box',
+       
+          },
+          '&::-webkit-scrollbar-thumb': {
+            background: '#ED8936',
+            maxHeight: "20px",
+            borderTop: "60px solid #ED8936"
           },
         }}
       >
@@ -189,7 +204,6 @@ const QuestInProgress = ({ onCompleted }) => {
           value={answer || ''}
        
           placeholder="Type your answer"
-          // onChange={debounce(handleOnChange, 300)}
           onChange={handleOnChange}
           maxLength={150}
         />
