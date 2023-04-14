@@ -8,7 +8,7 @@ import QuestWrapper from '../shared/QuestWrapper'
 
 import { debounce } from 'util/index'
 import { Chat } from '@components/shared/Chat/chat'
-import { initinalMessage } from './messages'
+
 
 import { type ChatGPTMessage, ChatLine, LoadingChatLine } from '@components/shared/Chat/chatline'
 import { useCookies } from 'react-cookie'
@@ -26,13 +26,13 @@ const QuestBegin = ({ onSubmitQuest }) => {
     <QuestWrapper>
       {/* <Chat /> */}
 
-      {progress === QUEST_START && (
+      {/* {progress === QUEST_START && (
         <Initial
           onStart={() => {
             progressSet(QUEST_INPROGRESS)
           }}
         />
-      )}
+      )} */}
       {progress === QUEST_INPROGRESS && (
         <QuestInProgress
           onCompleted={() => {
@@ -93,16 +93,16 @@ const ScrollableText = ({ message, ...props }) => {
   )
 }
 
-const Initial = ({ onStart }) => {
-  return (
-    <>
-      <ScrollableText message={initinalMessage} />
-      <Button w={'200px'} onClick={onStart} variant="orange">
-        START
-      </Button>
-    </>
-  )
-}
+// const Initial = ({ onStart }) => {
+//   return (
+//     <>
+//       <ScrollableText message={initinalMessage} />
+//       <Button w={'200px'} onClick={onStart} variant="orange">
+//         START
+//       </Button>
+//     </>
+//   )
+// }
 
 const startMessages: ChatGPTMessage[] = [
   {
