@@ -104,11 +104,19 @@ const ScrollableText = ({ message, ...props }) => {
 //   )
 // }
 
+// const startMessages: ChatGPTMessage[] = [
+//   {
+//     role: 'assistant',
+//     content:
+//       'You wake up in a cave. It is dark and you have no idea how you arrived here. You look ahead of you and see dimly lit tunnels ahead of you. Left, Right or Straight ahead. What do you choose?',
+//   },
+// ]
+
 const startMessages: ChatGPTMessage[] = [
   {
-    role: 'assistant',
+    role: 'system',
     content:
-      'You wake up in a cave. It is dark and you have no idea how you arrived here. You look ahead of you and see dimly lit tunnels ahead of you. Left, Right or Straight ahead. What do you choose?',
+      '',
   },
 ]
 
@@ -121,6 +129,7 @@ const QuestInProgress = ({ onCompleted }) => {
   const [cookie, setCookie] = useCookies([COOKIE_NAME])
   const [answer, answerSet] = useState('')
 
+  
 
 
   useEffect(() => {
@@ -164,6 +173,7 @@ const QuestInProgress = ({ onCompleted }) => {
       let lastMessage = ''
 
       while (!done) {
+        
         const { value, done: doneReading } = await reader.read()
         done = doneReading
         const chunkValue = decoder.decode(value)
@@ -176,8 +186,10 @@ const QuestInProgress = ({ onCompleted }) => {
         const newProgress = progress + 10;
         progressSet(newProgress)
         answerSet('')
-        setLoading(false)
+        
       }
+      setLoading(false)
+      
     } catch (err) {
       console.log('Edge function returned.')
       if (err) {
@@ -200,12 +212,17 @@ const QuestInProgress = ({ onCompleted }) => {
         <Input
           variant={'main'}
           type="text"
-
+          disabled={loading}
           value={answer || ''}
        
           placeholder="Type your answer"
           onChange={handleOnChange}
           maxLength={150}
+          onKeyPress={event => {
+            if (event.key === 'Enter') {
+              sendMessage(answer)
+            }
+          }}
         />
         <Flex ml="auto" color="whiteAlpha.300">
           {answer?.length || 0}/150
@@ -215,7 +232,7 @@ const QuestInProgress = ({ onCompleted }) => {
       <Button
         w={'200px'}
         onClick={() => {
-          if(progress === 50){
+          if(progress === 80){
             onCompleted()
           }else{
             sendMessage(answer)

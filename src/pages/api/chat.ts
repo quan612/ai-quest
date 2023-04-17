@@ -25,7 +25,6 @@ const handler = async (req: Request): Promise<Response> => {
     messages.push(...bodyMessages)
   }
   
-
   const requestHeaders: Record<string, string> = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
