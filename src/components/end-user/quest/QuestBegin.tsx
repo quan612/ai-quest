@@ -53,8 +53,9 @@ const ScrollableText = ({ message, ...props }) => {
     <Flex
       position="relative"
       w="100%"
-      h="33%"
-      maxH="33%"
+      minH="33%"
+      h="auto"
+      // maxH="33%"
       flexDirection={'column'}
       className="scrollable-quest-text"
       {...props}
