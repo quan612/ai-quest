@@ -129,9 +129,13 @@ const QuestInProgress = ({ onCompleted }) => {
   const [cookie, setCookie] = useCookies([COOKIE_NAME])
   const [answer, answerSet] = useState('')
 
+  useEffect(() => {
+    // send first begin message
+
+    sendMessage("BEGIN")
+  }, [])
+
   
-
-
   useEffect(() => {
     if (!cookie[COOKIE_NAME]) {
       // generate a semi random short id
