@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Heading, Button, Input, ButtonGroup } from '@chakra-ui/react'
+import { Box, Flex, Text, Heading, Button, Input, ButtonGroup, Icon } from '@chakra-ui/react'
 
 const QuestWrapper = ({ children }) => {
   return (
@@ -25,9 +25,9 @@ const QuestWrapper = ({ children }) => {
 export default QuestWrapper
 const QuestFrameSvg = () => {
   return (
-    <svg
-      width="770"
-      height="100%"
+    <Icon
+      width="100%"
+      height="536px"
       viewBox="0 0 770 436"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -86,6 +86,6 @@ const QuestFrameSvg = () => {
           <stop offset="1" stopOpacity="0" />
         </linearGradient>
       </defs>
-    </svg>
+    </Icon>
   )
 }

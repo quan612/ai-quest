@@ -53,8 +53,8 @@ const ScrollableText = ({ message, ...props }) => {
     <Flex
       position="relative"
       w="100%"
-      h="30%"
-      maxH="30%"
+      h="33%"
+      maxH="33%"
       flexDirection={'column'}
       className="scrollable-quest-text"
       {...props}
@@ -93,25 +93,6 @@ const ScrollableText = ({ message, ...props }) => {
   )
 }
 
-// const Initial = ({ onStart }) => {
-//   return (
-//     <>
-//       <ScrollableText message={initinalMessage} />
-//       <Button w={'200px'} onClick={onStart} variant="orange">
-//         START
-//       </Button>
-//     </>
-//   )
-// }
-
-// const startMessages: ChatGPTMessage[] = [
-//   {
-//     role: 'assistant',
-//     content:
-//       'You wake up in a cave. It is dark and you have no idea how you arrived here. You look ahead of you and see dimly lit tunnels ahead of you. Left, Right or Straight ahead. What do you choose?',
-//   },
-// ]
-
 const startMessages: ChatGPTMessage[] = [
   {
     role: 'system',
@@ -130,8 +111,7 @@ const QuestInProgress = ({ onCompleted }) => {
   const [answer, answerSet] = useState('')
 
   useEffect(() => {
-    // send first begin message
-
+    // send begin message on first render
     sendMessage("BEGIN")
   }, [])
 
