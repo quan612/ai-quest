@@ -86,7 +86,7 @@ const ScrollableText = ({ message, ...props }) => {
           },
         }}
       >
-        <Text fontSize="lg" color="orange.400" textAlign={'center'} whiteSpace={'break-spaces'}>
+        <Text fontSize="lg" color="orange.400" textAlign={'left'} whiteSpace={'break-spaces'}>
           {message}
         </Text>
       </Flex>
