@@ -1,5 +1,15 @@
-import React, { useEffect } from 'react'
-import { Box, Flex, Container, Heading, ButtonGroup, Button, Text, Image } from '@chakra-ui/react'
+import React, { useEffect, useState } from 'react'
+import {
+  Box,
+  Flex,
+  Container,
+  Heading,
+  ButtonGroup,
+  Button,
+  Text,
+  Image,
+  useDisclosure,
+} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { ShortContainer } from '@components/end-user/wrappers'
 
@@ -21,6 +31,11 @@ export default function ConnectBoard() {
   const { address, isConnected } = useAccount()
   const { data: session, status } = useSession()
 
+  const [showBtn, showBtnSet] = useState(true)
+
+  const loginModal = useDisclosure()
+
+  // console.log(connectors)
   useEffect(() => {
     if (isConnected && !session) {
       handleLogin()
@@ -73,22 +88,64 @@ export default function ConnectBoard() {
           <Text fontSize="2xl" color={'#fff'} textAlign="center">
             Connect your wallet to begin.
           </Text>
-          <Button
-            w={{ base: '192px', md: '192px' }}
-            onClick={() => {
-              if (!isConnected) {
-                connect({ connector: connectors[0] })
-              } else {
-                handleLogin()
-              }
-            }}
-            variant="orange"
-          >
-            CONNECT WALLET
-          </Button>
+          {showBtn && (
+            <Button
+              w={{ base: '192px', md: '192px' }}
+              onClick={() => {
+                loginModal.onOpen()
+                showBtnSet(false)
+                // if (!isConnected) {
+                //   connect({ connector: connectors[0] })
+                // } else {
+                //   handleLogin()
+                // }
+              }}
+              variant="orange"
+            >
+              CONNECT WALLET
+            </Button>
+          )}
+
+          {loginModal?.isOpen && (
+            <UserLogin
+              isOpen={loginModal.isOpen}
+              onClose={() => {
+                loginModal.onClose()
+              }}
+            />
+          )}
         </Flex>
       </Flex>
       <Timer />
     </LayoutWrapper>
+  )
+}
+
+const UserLogin = () => {
+  const { connect, connectors, error, isLoading, pendingConnector } = useConnect()
+  const { address, isConnected } = useAccount()
+  return (
+    <>
+      {connectors?.map((connector) => (
+        <Button
+          key={connector.id}
+          w={{ base: '192px', md: '192px' }}
+          // onClick={() => connect({ connector })}
+          onClick={() => {
+            if (!isConnected) {
+              connect({ connector: connector })
+            } else {
+              //    //   handleLogin()
+              //    // }
+            }
+          }}
+          variant="orange"
+        >
+          {connector.name}
+          {!connector.ready && ' (unsupported)'}
+          {isLoading && connector.id === pendingConnector?.id && ' (connecting)'}
+        </Button>
+      ))}{' '}
+    </>
   )
 }

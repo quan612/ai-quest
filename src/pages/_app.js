@@ -33,18 +33,19 @@ const { chains, provider } = configureChains(
 
 const connectors = [
   new MetaMaskConnector({ chains }),
-  // new CoinbaseWalletConnector({
-  //   chains,
-  //   options: {
-  //     appName: 'wagmi',
-  //   },
-  // }),
-  // new WalletConnectConnector({
-  //   chains,
-  //   options: {
-  //     projectId: '...',
-  //   },
-  // }),
+  new CoinbaseWalletConnector({
+    chains,
+    options: {
+      appName: 'wagmi',
+    },
+  }),
+  new WalletConnectConnector({
+    chains,
+    options: {
+      qrcode: true,
+      projectId: "a2a3402e9b82f16fe8d8e83a018c6947"
+    },
+  }),
   // new InjectedConnector({
   //   chains,
   //   options: {
@@ -55,7 +56,7 @@ const connectors = [
 ]
 
 const wagmiClient = createClient({
-  autoConnect: true,
+  autoConnect: false,
   connectors,
   provider,
 });

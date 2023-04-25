@@ -2,7 +2,6 @@ import React, { useRef, useEffect, useState, useCallback } from 'react'
 
 import { Box, Flex, Text, Heading, Button, Input, ButtonGroup, Progress } from '@chakra-ui/react'
 import { Timer } from '../shared/Timer'
-import { Heading2XL, HeadingLg, TextXL } from '@components/shared/Typography'
 import { useRouter } from 'next/router'
 import QuestWrapper from '../shared/QuestWrapper'
 
@@ -15,7 +14,6 @@ import { useCookies } from 'react-cookie'
 
 const COOKIE_NAME = 'nextjs-example-ai-chat-gpt3'
 
-const QUEST_START = 0
 const QUEST_INPROGRESS = 33
 const PROGRESS_1 = 100
 
@@ -25,17 +23,10 @@ const QuestBegin = ({ onSubmitQuest }) => {
   return (
     <QuestWrapper>
       {/* <Chat /> */}
-
-      {/* {progress === QUEST_START && (
-        <Initial
-          onStart={() => {
-            progressSet(QUEST_INPROGRESS)
-          }}
-        />
-      )} */}
       {progress === QUEST_INPROGRESS && (
         <QuestInProgress
           onCompleted={() => {
+            console.log("on completed")
             onSubmitQuest()
           }}
         />
@@ -130,11 +121,12 @@ const QuestInProgress = ({ onCompleted }) => {
     setLoading(true)
 
     const newMessages = [...messages, { role: 'user', content: message } as ChatGPTMessage]
-    // setMessages(newMessages) // to not show existing answer
+    setMessages(newMessages) // to not show existing answer
     const last10messages = newMessages.slice(-10) // remember last 10 messages
 
     try {
-      const response = await fetch('/api/chat', {
+
+      const response: Response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -148,6 +140,7 @@ const QuestInProgress = ({ onCompleted }) => {
       // This data is a ReadableStream
       const data = response.body
       if (!data) {
+        console.log("no data")
         return
       }
 
@@ -165,8 +158,8 @@ const QuestInProgress = ({ onCompleted }) => {
 
         lastMessage = lastMessage + chunkValue
 
-        // setMessages([...newMessages, { role: 'assistant', content: lastMessage } as ChatGPTMessage])  // to not show existing answer
-        setMessages([...messages, { role: 'assistant', content: lastMessage } as ChatGPTMessage])
+        setMessages([...newMessages, { role: 'assistant', content: lastMessage } as ChatGPTMessage])  // to not show existing answer
+        // setMessages([...messages, { role: 'assistant', content: lastMessage } as ChatGPTMessage])
 
         const newProgress = progress + 10;
         progressSet(newProgress)
@@ -176,6 +169,7 @@ const QuestInProgress = ({ onCompleted }) => {
       setLoading(false)
       
     } catch (err) {
+      console.log(err)
       console.log('Edge function returned.')
       if (err) {
         throw new Error(err.statusText)
@@ -217,7 +211,9 @@ const QuestInProgress = ({ onCompleted }) => {
       <Button
         w={'200px'}
         onClick={() => {
-          if(progress === 80){
+          console.log(progress)
+          if(progress === 120){
+            console.log("completed")
             onCompleted()
           }else{
             sendMessage(answer)
