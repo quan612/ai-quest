@@ -160,7 +160,7 @@ const QuestInProgress = ({ onCompleted }) => {
         w={'200px'}
         onClick={() => {
           console.log(progress)
-          if(progress === 10){
+          if(progress === 100){
             console.log("completed")
             onCompleted()
           }else{
