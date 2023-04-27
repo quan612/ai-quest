@@ -1,6 +1,8 @@
 import { type ChatGPTMessage } from '@components/shared/Chat/chatline'
+
 import { firstMessage } from '@util/firstMessage'
 import { OpenAIStream, OpenAIStreamPayload } from '@util/OpenAIStream'
+
 
 // break the app if the API key is missing
 if (!process.env.OPENAI_API_KEY) {
@@ -9,15 +11,21 @@ if (!process.env.OPENAI_API_KEY) {
 
 export const config = {
   runtime: 'experimental-edge',
+  // runtime: 'edge',
 }
 
 const handler = async (req: Request): Promise<Response> => {
   const body = await req.json()
 
+  const botMessage = await fetch('http://localhost:9001/api/user/bot-messages/query')
+  const botMessageRes = await botMessage.json()
+  const message = botMessageRes[0]?.value;
+  // console.log(message)
+
   const messages: ChatGPTMessage[] = [
     {
       role: 'system',
-      content: firstMessage,// process.env.FIRST_MESSAGE firstMessage
+      content: message,// process.env.FIRST_MESSAGE firstMessage
 
     },
   ]

@@ -270,3 +270,9 @@ model AppState {
   name              String                        @unique
   expired           DateTime                      @db.Date
 }
+
+model BotMessage {
+  id                Int                           @id @default(autoincrement())
+  key               String                        @unique
+  value             String?                       @default("")
+}
