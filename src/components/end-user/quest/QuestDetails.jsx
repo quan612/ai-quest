@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 import QuestWrapper from '../shared/QuestWrapper'
 
 import QuestBegin from './QuestBegin'
+import { ContentLg } from '../wrappers'
 
 const BEGIN = 0
 const QUEST_BEGIN = 1
@@ -14,7 +15,7 @@ const QUEST_SUBMITTED = 3
 const CLAIMED_TOKEN = 4
 
 const QuestDetails = ({ session }) => {
-  const [view, viewSet] = useState(QUEST_BEGIN)
+  const [view, viewSet] = useState(QUEST_SUBMITTED) /// QUEST_BEGIN
   const router = useRouter()
 
   // const {
@@ -22,10 +23,6 @@ const QuestDetails = ({ session }) => {
   //   nftOwnQuestModal,
   //   questSelected,
   // } = useContext(UserQuestContext)
-
-  const onBeginQuest = useCallback(() => {
-    viewSet(QUEST_SUBMITTED)
-  })
 
   const onSubmitQuest = useCallback(() => {
     viewSet(QUEST_SUBMITTED)
@@ -36,8 +33,7 @@ const QuestDetails = ({ session }) => {
   }, [])
 
   return (
-    <Box
-      flex="1"
+    <Flex
       position={'relative'}
       display="flex"
       w="100%"
@@ -52,22 +48,14 @@ const QuestDetails = ({ session }) => {
       backgroundSize={'cover'}
       backgroundRepeat="no-repeat"
     >
-      <Flex
-        w={'container.lg'}
-        maxW="container.lg"
-        direction="column"
-        gap="24px"
-        justifyContent={'center'}
-        alignItems="center"
-        h="100%"
-      >
+      <ContentLg>
         {view === QUEST_BEGIN && <QuestBegin onSubmitQuest={onSubmitQuest} />}
         {view === QUEST_SUBMITTED && <QuestCompleted onClaimToken={onClaimToken} />}
         {view === CLAIMED_TOKEN && <ClaimedTokenFrame />}
-      </Flex>
+      </ContentLg>
 
       <Timer />
-    </Box>
+    </Flex>
   )
 }
 
@@ -77,10 +65,10 @@ const QuestCompleted = ({ onClaimToken }) => {
   return (
     <QuestWrapper>
       <Heading2XL>Quest Completed</Heading2XL>
-      <Text fontSize="xl" textAlign={'center'}>
+      <TextXL textAlign={'center'}>
         Quests are available once every 24 hours and you will be rewarded 10 tokens per quest. All
         actions will impact your final NFT and cannot be undone, tread carefully.
-      </Text>
+      </TextXL>
 
       <Button w={{ base: '192px', md: '296px' }} onClick={onClaimToken} variant="orange">
         CLAIM TOKENS
@@ -101,18 +89,27 @@ const ClaimedTokenFrame = () => {
         </Text>{' '}
         to earn 10 more tokens for the burn phase.
       </TextXL>
-      <ButtonGroup gap="3rem">
+      <ButtonGroup
+        w={'auto'}
+        gap={{ base: '1rem', lg: '3rem' }}
+        display="flex"
+        flexDirection={{ base: 'column', md: 'row' }}
+        alignItems="center"
+      >
         <Button
-          w={{ base: '192px', md: '240px' }}
+          w={{ base: '100%', md: '240px' }}
           onClick={() => console.log('share on twiter')}
           variant="outline-orange"
+          marginInlineStart={'0px!important'}
         >
           SHARE ON TWITTER
         </Button>
         <Button
-          w={{ base: '192px', md: '240px' }}
+          w={{ base: '100%', md: '240px' }}
           onClick={() => router.push('/')}
           variant="orange"
+          p="0px"
+          marginInlineStart="0px!important"
         >
           VIEW MY TOKENS
         </Button>

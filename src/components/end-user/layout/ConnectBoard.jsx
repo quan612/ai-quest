@@ -10,8 +10,6 @@ import {
   Image,
   useDisclosure,
 } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
-import { ShortContainer } from '@components/end-user/wrappers'
 
 import { getCsrfToken, signIn, useSession } from 'next-auth/react'
 import { SiweMessage } from 'siwe'
@@ -20,7 +18,7 @@ import { useAccount, useConnect, useNetwork, useSignMessage } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { Timer } from '../shared/Timer'
 import { LayoutWrapper } from './UserLayout'
-import { Heading2XL } from '@components/shared/Typography'
+import { Heading2XL, Text2XL } from '@components/shared/Typography'
 import { MinimalNavigation } from './Navigation'
 
 export default function ConnectBoard() {
@@ -35,7 +33,6 @@ export default function ConnectBoard() {
 
   const loginModal = useDisclosure()
 
-  // console.log(connectors)
   useEffect(() => {
     if (isConnected && !session) {
       handleLogin()
@@ -72,22 +69,30 @@ export default function ConnectBoard() {
   return (
     <LayoutWrapper>
       <MinimalNavigation />
-      <Flex position="absolute" top="0" w="100%" h="100vh" opacity={'30%'} justify="center">
+      <Flex
+        position="absolute"
+        top="0"
+        w="100%"
+        h="100vh"
+        opacity={'30%'}
+        justify="center"
+        className="circle-animation"
+      >
         <Image src="/img/user/Line circle animation.gif" h="100%" w="auto" />
       </Flex>
 
       <Flex h="100%" alignItems={'center'} justify={'center'}>
         <Flex
-          w={'container.lg'}
+          w={{ base: '100%', lg: 'container.lg' }}
           maxW="container.lg"
           flexDirection={'column'}
           alignItems={'center'}
-          gap={'48px'}
+          gap={{ base: '24px', lg: '48px' }}
         >
           <Heading2XL>A journey powered by AI</Heading2XL>
-          <Text fontSize="2xl" color={'#fff'} textAlign="center">
+          <Text2XL color={'#fff'} textAlign="center">
             Connect your wallet to begin.
-          </Text>
+          </Text2XL>
           {showBtn && (
             <Button
               w={{ base: '192px', md: '192px' }}

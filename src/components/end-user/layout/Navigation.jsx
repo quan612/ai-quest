@@ -1,9 +1,7 @@
 import React, { useContext, useState, useRef } from 'react'
-import { Box, Flex, Button, Text, Icon } from '@chakra-ui/react'
+import { Box, Flex, Button, Text, Icon, useBreakpointValue } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
-import { ShortContainer } from '@components/end-user/wrappers'
 
-import { SiweMessage } from 'siwe'
 import { useAccount, useConnect, useNetwork, useSignMessage, useDisconnect } from 'wagmi'
 
 import { InjectedConnector } from 'wagmi/connectors/injected'
@@ -11,13 +9,15 @@ import { RoadmapLogo } from '@components/shared/Logo'
 import NextLink from 'next/link'
 import { AppContext, BURN_STATE, FORGE_STATE, MINT_STATE } from '@context/AppContext'
 
-export default function Navigation() {
+export default function Navigation({ session }) {
   const { connect, connectors, error, isLoading, pendingConnector } = useConnect()
 
   const { signMessageAsync } = useSignMessage()
   const { chain } = useNetwork()
   const { address } = useAccount()
   const router = useRouter()
+
+  const navigationWrap = useBreakpointValue({ base: 'sm', sm: 'md', lg: 'lg' })
 
   const { appState } = useContext(AppContext)
 
@@ -29,16 +29,24 @@ export default function Navigation() {
         className="navigation"
         bg="transparent"
         position={'absolute'}
-        top="32px"
+        top={{ base: '16px', lg: '32px' }}
+        h={{ base: '66px', lg: '112px' }}
         w="100%"
-        h="112px"
-        p="0px 128px"
+        p={navigationWrap === 'lg' ? '0px 128px' : '0px 1rem'}
         zIndex={999}
       >
-        <Flex className="roadmap-art" flex="45%" align={'center'}>
-          <RoadmapLogo />
-        </Flex>
-        <Flex className="nav-items" flex="55%" align={'center'} justify="space-between">
+        {navigationWrap === 'lg' && (
+          <Flex className="roadmap-art" flex="45%" align={'center'}>
+            <RoadmapLogo />
+          </Flex>
+        )}
+
+        <Flex
+          className="nav-items"
+          flex={navigationWrap === 'lg' ? '55%' : '100%'}
+          align={'center'}
+          justify="space-between"
+        >
           {appState.name === MINT_STATE && (
             <>
               <NextLink href="/">
@@ -115,7 +123,7 @@ export default function Navigation() {
             </Text>
           </NextLink>
 
-          <WalletButton />
+          <WalletButton session={session} />
         </Flex>
       </Flex>
     )
@@ -127,9 +135,9 @@ export const MinimalNavigation = () => {
       className="navigation"
       bg="transparent"
       position={'absolute'}
-      top="32px"
+      top={{ base: '16px', lg: '32px' }}
+      h={{ base: '66px', lg: '112px' }}
       w="100%"
-      h="112px"
       p="0px 128px"
       zIndex={999}
       align={'center'}
@@ -143,18 +151,18 @@ export const MinimalNavigation = () => {
 import { useOnClickOutside } from 'usehooks-ts'
 import { signOut } from 'next-auth/react'
 import { shortenAddress } from '@util/index'
-const WalletButton = () => {
+
+const WalletButton = ({ session }) => {
   const [isOpen, setOpen] = useState(false)
   const ref = useRef()
   const { disconnect } = useDisconnect()
-  const { address } = useAccount()
 
   useOnClickOutside(ref, () => setOpen(false))
 
   return (
     <Flex gap="1rem" direction="column" position={'relative'} w="189px" ref={ref}>
-      <Box position="relative">
-        <WalletButtonSvg onClick={() => setOpen(!isOpen)} />
+      <Box position="relative" cursor={'pointer'} onClick={() => setOpen(!isOpen)}>
+        <WalletButtonSvg />
         <Flex
           position="absolute"
           top={0}
@@ -164,7 +172,9 @@ const WalletButton = () => {
           h="100%"
           w="100%"
         >
-          <Text color="#ED8936"> {address && shortenAddress(address)}</Text>
+          <Text color="#ED8936">
+            {session?.address?.length > 10 && shortenAddress(session?.address)}
+          </Text>
         </Flex>
       </Box>
       {isOpen && (

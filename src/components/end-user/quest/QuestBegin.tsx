@@ -14,24 +14,18 @@ import { useCookies } from 'react-cookie'
 
 const COOKIE_NAME = 'nextjs-example-ai-chat-gpt3'
 
-const QUEST_INPROGRESS = 33
-const PROGRESS_1 = 100
 
 const QuestBegin = ({ onSubmitQuest }) => {
-  const [progress, progressSet] = useState(QUEST_INPROGRESS) // QUEST_INPROGRESS  QUEST_START
 
   return (
     <QuestWrapper>
-      {/* <Chat /> */}
-      {progress === QUEST_INPROGRESS && (
+   
         <QuestInProgress
           onCompleted={() => {
             console.log("on completed")
             onSubmitQuest()
           }}
         />
-      )}
-
      
     </QuestWrapper>
   )
@@ -39,51 +33,7 @@ const QuestBegin = ({ onSubmitQuest }) => {
 
 export default QuestBegin
 
-const ScrollableText = ({ message, ...props }) => {
-  return (
-    <Flex
-      position="relative"
-      w="100%"
-      minH="33%"
-      h="auto"
-      // maxH="33%"
-      flexDirection={'column'}
-      className="scrollable-quest-text"
-      {...props}
-    >
-      <Flex
-        flexDirection={'column'}
-        w="100%"
-        h="100%"
-        // justify={'center'}
-        overflow={'auto'}
-        __css={{
-          '::-webkit-scrollbar': {
-            // display: 'none',
-            width: '6px',
-         
-          },
-          '&::-webkit-scrollbar-track': {
-            background: '#123028',
-            border:
-              '3px solid transparent' /* Use your background color to overlap the behind layer, making track thinner than thumb */,
-            backgroundClip: 'content-box',
-       
-          },
-          '&::-webkit-scrollbar-thumb': {
-            background: '#ED8936',
-            maxHeight: "20px",
-            borderTop: "60px solid #ED8936"
-          },
-        }}
-      >
-        <Text fontSize="lg" color="orange.400" textAlign={'left'} whiteSpace={'break-spaces'}>
-          {message}
-        </Text>
-      </Flex>
-    </Flex>
-  )
-}
+
 
 const startMessages: ChatGPTMessage[] = [
   {
@@ -178,8 +128,6 @@ const QuestInProgress = ({ onCompleted }) => {
     }
   }
 
-
-
   const handleOnChange = (e) => {
     answerSet(e.target.value)
   }
@@ -203,7 +151,7 @@ const QuestInProgress = ({ onCompleted }) => {
             }
           }}
         />
-        <Flex ml="auto" color="whiteAlpha.300">
+        <Flex ml="auto" color="whiteAlpha.300" fontSize={{base:"12px", md:"16px"}}>
           {answer?.length || 0}/150
         </Flex>
       </Flex>
@@ -212,7 +160,7 @@ const QuestInProgress = ({ onCompleted }) => {
         w={'200px'}
         onClick={() => {
           console.log(progress)
-          if(progress === 120){
+          if(progress === 10){
             console.log("completed")
             onCompleted()
           }else{
@@ -231,9 +179,56 @@ const QuestInProgress = ({ onCompleted }) => {
         w="85%"
         transition={'0.5s'}
         position={'absolute'}
-        bottom={'1rem'}
+        bottom={'0.5rem'}
         className="quest-progress"
       />
     </>
+  )
+}
+
+const ScrollableText = ({ message, ...props }) => {
+  return (
+    <Flex
+      position="relative"
+      w="100%"
+      minH={{base:"40%", lg:"33%"}}
+      maxH={{base:"40%", lg:"none"}}
+      h="auto"
+      // maxH="33%"
+      flexDirection={'column'}
+      className="scrollable-quest-text"
+      {...props}
+    >
+      <Flex
+        flexDirection={'column'}
+        w="100%"
+        h="100%"
+        // justify={'center'}
+        overflow={'auto'}
+        __css={{
+          '::-webkit-scrollbar': {
+            // display: 'none',
+            width: '6px',
+         
+          },
+          '&::-webkit-scrollbar-track': {
+            background: '#123028',
+            border:
+              '3px solid transparent' /* Use your background color to overlap the behind layer, making track thinner than thumb */,
+            backgroundClip: 'content-box',
+       
+          },
+          '&::-webkit-scrollbar-thumb': {
+            background: '#ED8936',
+            maxHeight: "20px",
+            borderTop: "60px solid #ED8936"
+          },
+        }}
+      >
+        <Text fontSize={{base:"14px", md:"18px"}} color="orange.400" textAlign={'left'} whiteSpace={'break-spaces'}>
+          {message}
+        </Text>
+      </Flex>
+    </Flex>
   )
 }

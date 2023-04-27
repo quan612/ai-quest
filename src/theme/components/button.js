@@ -5,7 +5,7 @@ export const buttonStyles = {
     Button: {
       baseStyle: {
         w: 'auto',
-        height: { 'xs': '24px', '2xs': '32px', 'md': '40px', 'lg': '48px' },
+        height: { 'xs': '32px', '2xs': '32px', 'md': '40px', 'lg': '48px' },
         paddingX: { xs: '8px', '2xs': '12px', '2sm': '16px', 'lg': '24px' },
         fontSize: { xs: '12px', '2xs': '14px', '2sm': '16px', 'lg': '18px' },
         fontWeight: 'semibold',
@@ -569,7 +569,7 @@ export const buttonStyles = {
           borderColor: 'transparent',
           bg: 'orange.400',
           color: 'black',
-
+          margin: "0px",
           _hover: {
             transition: '0.8s',
             bg: 'orange.500',

@@ -17,9 +17,7 @@ function QuestPage({ session }) {
         <Loading />
       )}
       {appState.name === MINT_STATE && (
-        <UserQuestProvider>
-          <QuestBoard />
-        </UserQuestProvider>
+        <QuestBoard />
       )}
     </>
   )

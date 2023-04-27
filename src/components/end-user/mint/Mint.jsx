@@ -2,6 +2,8 @@ import React, { useRef, useContext, useState, useCallback } from 'react'
 import { Box, Flex, Text, Heading, Button, Image } from '@chakra-ui/react'
 import { Heading2XL, HeadingLg, HeadingXL, Text2XL } from '@components/shared/Typography'
 import VerticalAnimation from '../shared/VerticalAnimation'
+import { ContentLg } from '../wrappers'
+import useDeviceDetect from '@hooks/useDeviceDetect'
 
 const Mint = ({ onMintSucceed }) => {
   const handleMint = useCallback(() => {
@@ -22,6 +24,7 @@ export default Mint
 
 const MintFrame = ({ onMint }) => {
   const [token, tokenSet] = useState(10)
+  const { isMobile } = useDeviceDetect()
 
   const decrease = useCallback(() => {
     if (token === 0) return
@@ -41,7 +44,9 @@ const MintFrame = ({ onMint }) => {
 
   return (
     <Box position="relative">
-      <MintFrameSvg />
+      <Box w="100%" h={{ base: '99px', lg: '222px' }}>
+        <MintFrameSvg />
+      </Box>
       <Flex
         position="absolute"
         direction="column"
@@ -49,15 +54,15 @@ const MintFrame = ({ onMint }) => {
         left="0"
         justifyContent={'center'}
         alignItems="center"
-        w="100%"
+        w="98%"
         h="100%"
-        gap="24px"
+        gap={{ base: '8px', lg: '24px' }}
       >
         <HeadingLg color="orange.400" textShadow="0px 0px 15px #ED8936">
           Choose token quantity
         </HeadingLg>
-        <Flex gap="48px">
-          <Flex direction="column" gap="1rem">
+        <Flex gap={{ base: '16px', lg: '48px' }}>
+          <Flex direction="column" gap={{ base: '0.5rem', lg: '1rem' }}>
             <Flex direction="column" position="relative" className="token-quantity">
               <TokenQuantitySvg />
               <Flex
@@ -69,17 +74,25 @@ const MintFrame = ({ onMint }) => {
                 w="100%"
                 h="100%"
               >
-                <Flex w="43px" justifyContent={'center'} alignItems="center">
-                  <Text fontSize={'3xl'} cursor="pointer" onClick={decrease}>
+                <Flex
+                  w={{ base: '36px', lg: '43px' }}
+                  justifyContent={'center'}
+                  alignItems="center"
+                >
+                  <Text fontSize={{ base: 'xl', lg: '3xl' }} cursor="pointer" onClick={decrease}>
                     -
                   </Text>
                 </Flex>
 
-                <Text fontSize={'xl'} color="orange.400">
+                <Text fontSize={{ base: 'lg', lg: 'xl' }} color="orange.400">
                   {token}
                 </Text>
-                <Flex w="43px" justifyContent={'center'} alignItems="center">
-                  <Text fontSize={'3xl'} cursor="pointer" onClick={increase}>
+                <Flex
+                  w={{ base: '36px', lg: '43px' }}
+                  justifyContent={'center'}
+                  alignItems="center"
+                >
+                  <Text fontSize={{ base: 'xl', lg: '3xl' }} cursor="pointer" onClick={increase}>
                     +
                   </Text>
                 </Flex>
@@ -87,6 +100,7 @@ const MintFrame = ({ onMint }) => {
             </Flex>
             <Flex className="min-max" w="100%" justifyContent={'center'} gap="16px">
               <Text
+                fontSize={{ base: 'sm', lg: 'md' }}
                 color="whiteAlpha.500"
                 _hover={{ color: 'orange.400' }}
                 cursor={'pointer'}
@@ -96,7 +110,7 @@ const MintFrame = ({ onMint }) => {
               </Text>
             </Flex>
           </Flex>
-          <Button w={{ base: '192px', md: '296px' }} onClick={onMint} variant="orange">
+          <Button w={{ base: '160px', md: '296px' }} onClick={onMint} variant="orange">
             MINT
           </Button>
         </Flex>
@@ -108,8 +122,8 @@ const MintFrame = ({ onMint }) => {
 const MintFrameSvg = () => {
   return (
     <svg
-      width="766"
-      height="222"
+      width="100%"
+      height="100%"
       viewBox="0 0 766 222"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

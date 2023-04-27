@@ -32,6 +32,13 @@ const { chains, provider } = configureChains(
 
 
 const connectors = [
+  // new InjectedConnector({
+  //   chains,
+  //   options: {
+  //     name: 'Injected',
+  //     shimDisconnect: true,
+  //   },
+  // }),
   new MetaMaskConnector({ chains }),
   new CoinbaseWalletConnector({
     chains,
@@ -46,13 +53,7 @@ const connectors = [
       projectId: "a2a3402e9b82f16fe8d8e83a018c6947"
     },
   }),
-  // new InjectedConnector({
-  //   chains,
-  //   options: {
-  //     name: 'Injected',
-  //     shimDisconnect: true,
-  //   },
-  // }),
+
 ]
 
 const wagmiClient = createClient({
@@ -111,9 +112,9 @@ function MyApp({ Component, pageProps }) {
               <AppProvider>
                 {Component.requiredLogin && (
                   <UserLayout {...pageProps}>
-                    <AnimatePresence mode="wait" initial={false} transitionDuration="0.2s">
-                      <Component {...pageProps} key={router.asPath} />
-                    </AnimatePresence>
+                    {/* <AnimatePresence mode="wait" initial={false} transitionDuration="0.2s"> */}
+                    <Component {...pageProps} key={router.asPath} />
+                    {/* </AnimatePresence> */}
                   </UserLayout>
                 )}
                 {!Component.requiredLogin && (

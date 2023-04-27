@@ -7,41 +7,27 @@ import { useRouter } from 'next/router'
 import Mint from './Mint'
 import { Heading2XL, Text2XL } from '@components/shared/Typography'
 import VerticalAnimation from '../shared/VerticalAnimation'
+import useDeviceDetect from '@hooks/useDeviceDetect'
+import { ContentLg } from '../wrappers'
 
 const MINTABLE = 0
 const MINTED = 1
 const MintBoard = () => {
   const [view, viewSet] = useState(MINTABLE)
   const router = useRouter()
+  const { isMobile } = useDeviceDetect()
 
   return (
-    <Box
-      flex="1"
+    <Flex
+      className="mint-board"
       position={'relative'}
-      display="flex"
       w="100%"
-      h="100vh"
+      h={'100vh'}
       flexDirection={'column'}
-      justifyContent={'center'}
-      alignItems="center"
-      __css={
-        {
-          // background: `linear-gradient(180deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 91.67%), linear-gradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(/img/user/ai-mint.png)`,
-        }
-      }
-      backgroundPosition={'center'}
-      backgroundSize={'cover'}
-      backgroundRepeat="no-repeat"
+      justify={'center'}
+      align="center"
     >
-      <Flex
-        w={{ base: '80%', xl: 'container.lg' }}
-        maxW="container.lg"
-        direction="column"
-        gap="48px"
-        justifyContent={'center'}
-        alignItems="center"
-        h="100%"
-      >
+      <ContentLg>
         {view === MINTABLE && <Mint onMintSucceed={() => viewSet(MINTED)} />}
         {view === MINTED && (
           <>
@@ -59,9 +45,9 @@ const MintBoard = () => {
             <VerticalAnimation />
           </>
         )}
-      </Flex>
+      </ContentLg>
       <Timer />
-    </Box>
+    </Flex>
   )
 }
 

@@ -39,6 +39,7 @@ export function getAuthOptions(req) {
 
           const wallet = utils.getAddress(siwe.address);
 
+
           const user = await prisma.whiteList.findUnique({
             where: {
               wallet
@@ -53,7 +54,7 @@ export function getAuthOptions(req) {
             })
           }
           return {
-            id: siwe.address,
+            id: wallet,
           };
         } catch (e) {
           return null;
@@ -77,6 +78,7 @@ export function getAuthOptions(req) {
   return {
     callbacks: {
       async session({ session, token }) {
+
         session.address = token.sub;
         session.user = {
           name: token.sub,

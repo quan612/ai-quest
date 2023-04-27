@@ -31,15 +31,15 @@ const About = () => {
       justifyContent={'center'}
       alignItems="center"
     >
-      <AnimatedGif />
+      {/* <AnimatedGif /> */}
 
       <Flex
-        w={'container.md'}
+        w={{ base: '90%', lg: 'container.md' }}
         maxW="container.md"
         direction="column"
         justifyContent={'center'}
         alignItems="center"
-        mt="16rem" // 7rem plus header
+        mt={{ base: '8rem', lg: '16rem' }} // 7rem plus header
         gap="101px"
         zIndex={2}
       >
@@ -47,10 +47,10 @@ const About = () => {
 
         <Flex w="100%" direction={'column'}>
           <TheMint />
-          <TheBurn />
-          <TheReveal />
+          {/* <TheBurn />
+          <TheReveal /> */}
 
-          <Flex
+          {/* <Flex
             w="50%"
             alignSelf={'end'}
             direction={'column'}
@@ -77,7 +77,7 @@ const About = () => {
                 <ListItem>Art without Permanence will be burned</ListItem>
               </UnorderedList>
             </Flex>
-          </Flex>
+          </Flex> */}
         </Flex>
         <Heading2XL
           color="orange.600"
@@ -127,7 +127,7 @@ const TheJourney = () => {
     <Flex
       className="journey-about"
       gap="4rem"
-      p="56px 32px 145px 32px"
+      p={{ base: '56px 8px 145px 8px', lg: '56px 32px 145px 32px' }}
       direction={'column'}
       textAlign="center"
     >

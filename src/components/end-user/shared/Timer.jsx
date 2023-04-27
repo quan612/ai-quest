@@ -2,16 +2,7 @@ import React, { useState, useEffect, useContext, useCallback } from 'react'
 
 import { Box, Flex, Container, Image, Icon, Text } from '@chakra-ui/react'
 import getTimeLeft from '@util/getTimeLeft'
-import {
-  AppContext,
-  BURN_END,
-  BURN_STATE,
-  FORGE_END,
-  FORGE_STATE,
-  MINT_END,
-  MINT_STATE,
-  PENDING_STATE,
-} from '@context/AppContext'
+import { AppContext, BURN_STATE, FORGE_STATE, MINT_STATE, PENDING_STATE } from '@context/AppContext'
 
 export const Timer = () => {
   const { appState } = useContext(AppContext)
@@ -44,13 +35,13 @@ export const Timer = () => {
       position="relative"
       mt="auto"
       w="100%"
-      h="80px"
+      h={{ base: '60px', lg: '80px' }}
       align={'center'}
       justify="center"
       zIndex="99"
       pointerEvents={'none'}
     >
-      <Flex w="auto" h="100%" align={'center'} justify="center" position="relative">
+      <Flex w={'auto'} h="100%" align={'center'} justify="center" position="relative">
         <TimerSvg />
         <Flex
           position={'absolute'}
@@ -63,13 +54,18 @@ export const Timer = () => {
           gap="20px"
         >
           <Flex className="open-mint-end" flex="40%" align={'center'} justify="center">
-            <Text color="orange.400" ml="1rem" textAlign={'center'}>
+            <Text
+              color="orange.400"
+              ml="1rem"
+              textAlign={'center'}
+              fontSize={{ base: '10px', md: '12px', lg: 'md' }}
+            >
               {getTimerText()}
             </Text>
           </Flex>
-          <Flex className="counter" flex="60%" p="15px 0px" gap="20px">
+          <Flex className="counter" flex="60%" p="15px 0px" gap="20px" align={'center'}>
             <Box w="56px" className="timer-day" textAlign="center">
-              <Text color="orange.300" fontSize={'xl'}>
+              <Text color="orange.300" fontSize={{ base: 'md', lg: 'xl' }}>
                 {timeLeft.days}
               </Text>
               <Text color="white" fontSize={'sm'}>
@@ -78,7 +74,7 @@ export const Timer = () => {
             </Box>
 
             <Box w="56px" className="timer-hour" textAlign="center">
-              <Text color="orange.300" fontSize={'xl'}>
+              <Text color="orange.300" fontSize={{ base: 'md', lg: 'xl' }}>
                 {timeLeft.hours}
               </Text>
               <Text color="white" fontSize={'sm'}>
@@ -87,7 +83,7 @@ export const Timer = () => {
             </Box>
 
             <Box w="56px" className="timer-minutes" textAlign="center">
-              <Text color="orange.300" fontSize={'xl'}>
+              <Text color="orange.300" fontSize={{ base: 'md', lg: 'xl' }}>
                 {timeLeft.minutes}
               </Text>
               <Text color="white" fontSize={'sm'}>
@@ -95,7 +91,7 @@ export const Timer = () => {
               </Text>
             </Box>
             <Box w="56px" className="timer-seconds" textAlign="center">
-              <Text color="orange.300" fontSize={'xl'}>
+              <Text color="orange.300" fontSize={{ base: 'md', lg: 'xl' }}>
                 {timeLeft.seconds}
               </Text>
               <Text color="white" fontSize={'sm'}>

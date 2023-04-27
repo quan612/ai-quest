@@ -2,7 +2,6 @@ import React from 'react'
 import { Box, Flex, Container, Heading, ButtonGroup, Button, Text, Image } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { useWindowSize } from 'react-use'
-import { ShortContainer } from '@components/end-user/wrappers'
 import useDeviceDetect from '@hooks/useDeviceDetect'
 import ConnectBoard from './ConnectBoard'
 import Navigation from './Navigation'
@@ -22,13 +21,13 @@ function use100vh() {
 }
 
 export default function UserLayout({ session, children }) {
-  let router = useRouter()
-
   if (session) {
     return (
       <LayoutWrapper>
-        <Navigation />
+        <Navigation session={session} />
+        {/* <Flex h="100%" alignItems={'center'} justify={'center'}> */}
         {children}
+        {/* </Flex> */}
       </LayoutWrapper>
     )
   } else {
@@ -44,7 +43,7 @@ export const LayoutWrapper = ({ children }) => {
     <Flex
       w="100%"
       minH="100%"
-      ref={ref}
+      ref={isMobile ? null : ref}
       position={'relative'}
       flexDirection="column"
       className="layout-wrapper"

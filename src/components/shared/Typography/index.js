@@ -1,4 +1,4 @@
-import { Heading, Text } from '@chakra-ui/react'
+import { Heading, Text, useBreakpointValue } from '@chakra-ui/react'
 
 // xs: "14px",
 // sm: "16px",
@@ -6,8 +6,15 @@ import { Heading, Text } from '@chakra-ui/react'
 // lg: "24px",
 
 export const Heading2XL = (props) => {
+  const hd2xl = useBreakpointValue({ base: 'base', lg: 'md' }, { ssr: false })
+
+
   return (
-    <Heading size="2xl" color="orange.300" textShadow="0px 0px 15px #ED8936" fontWeight={"400"}
+    <Heading
+      // fontSize={{ base: "36px", lg: "48px" }}
+      fontSize={{ base: "32px", lg: "48px" }}
+      color="orange.300" textShadow="0px 0px 15px #ED8936" fontWeight={"400"}
+      textAlign="center"
       {...props}>
       {props.children}
     </Heading>
@@ -32,7 +39,7 @@ export const HeadingSm = (props) => {
 
 export const HeadingLg = (props) => {
   return (
-    <Heading size="lg" {...props}>
+    <Heading fontSize={{ base: "md", lg: "30px" }} {...props}>
       {props.children}
     </Heading>
   )
@@ -55,15 +62,17 @@ export const TextMd = (props) => {
 }
 export const TextXL = (props) => {
   return (
-    <Text fontSize="xl" lineHeight="30px" fontWeight={"400"} color="white" textAlign={"center"} {...props} >
+    <Text fontSize={{ base: "16px", lg: "xl" }} lineHeight={{ base: "24px", lg: "xl" }} fontWeight={"400"} color="white" textAlign={"center"} {...props} >
       {props.children}
     </Text>
   )
 }
 
 export const Text2XL = (props) => {
+
+  const bp = useBreakpointValue({ base: 'base', lg: 'md' }, { ssr: false })
   return (
-    <Text fontSize="2xl" lineHeight="36px" fontWeight={"400"} color="white" textAlign={"center"} {...props} >
+    <Text fontSize={{ base: "lg", lg: "2xl" }} lineHeight={bp === 'base' ? "24px" : "36px"} fontWeight={"400"} color="white" textAlign={"center"} {...props} >
       {props.children}
     </Text>
   )

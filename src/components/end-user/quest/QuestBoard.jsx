@@ -5,6 +5,7 @@ import { Timer } from '../shared/Timer'
 import { useRouter } from 'next/router'
 import QuestWrapper from '../shared/QuestWrapper'
 import { Heading2XL, TextXL } from '@components/shared/Typography'
+import { ContentLg } from '../wrappers'
 
 const QuestBoard = () => {
   const router = useRouter()
@@ -12,14 +13,12 @@ const QuestBoard = () => {
   const onBeginQuest = useCallback(() => {
     router.push('/quest/1234-abcd')
   }, [])
-  console.log(3)
+
   return (
-    <Box
-      flex="1"
-      position={'relative'}
+    <Flex
       display="flex"
       w="100%"
-      h="100%"
+      h="100vh"
       flexDirection={'column'}
       justifyContent={'center'}
       alignItems="center"
@@ -29,16 +28,9 @@ const QuestBoard = () => {
       backgroundPosition={'center'}
       backgroundSize={'cover'}
       backgroundRepeat="no-repeat"
+      className="quest-board"
     >
-      <Flex
-        w={'container.lg'}
-        maxW="container.lg"
-        h="100%"
-        direction="column"
-        gap="48px"
-        justifyContent={'center'}
-        alignItems="center"
-      >
+      <ContentLg>
         <QuestWrapper>
           <Heading2XL>Begin Your Quest</Heading2XL>
           <TextXL>
@@ -49,10 +41,10 @@ const QuestBoard = () => {
             BEGIN QUEST
           </Button>
         </QuestWrapper>
-      </Flex>
+      </ContentLg>
 
       <Timer />
-    </Box>
+    </Flex>
   )
 }
 
