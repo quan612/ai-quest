@@ -1,5 +1,5 @@
 import { type ChatGPTMessage } from '@components/shared/Chat/chatline'
-// import { firstMessage } from '@util/firstMessage'
+import { firstMessage } from '@util/firstMessage'
 import { OpenAIStream, OpenAIStreamPayload } from '@util/OpenAIStream'
 
 // break the app if the API key is missing
@@ -17,7 +17,7 @@ const handler = async (req: Request): Promise<Response> => {
   const messages: ChatGPTMessage[] = [
     {
       role: 'system',
-      content: process.env.FIRST_MESSAGE,// process.env.FIRST_MESSAGE firstMessage
+      content: firstMessage,// process.env.FIRST_MESSAGE firstMessage
 
     },
   ]
