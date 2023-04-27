@@ -15,7 +15,7 @@ const QUEST_SUBMITTED = 3
 const CLAIMED_TOKEN = 4
 
 const QuestDetails = ({ session }) => {
-  const [view, viewSet] = useState(QUEST_SUBMITTED) /// QUEST_BEGIN
+  const [view, viewSet] = useState(QUEST_BEGIN) /// QUEST_BEGIN
   const router = useRouter()
 
   // const {
