@@ -8,6 +8,7 @@ import QuestWrapper from '../shared/QuestWrapper'
 
 import QuestBegin from './QuestBegin'
 import { ContentLg } from '../wrappers'
+import StarAnimation from '../shared/StarAnimation'
 
 const BEGIN = 0
 const QUEST_BEGIN = 1
@@ -41,13 +42,14 @@ const QuestDetails = ({ session }) => {
       flexDirection={'column'}
       justifyContent={'center'}
       alignItems="center"
-      __css={{
-        background: `linear-gradient(180deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 91.67%), linear-gradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(/img/user/ai-quest.png)`,
-      }}
-      backgroundPosition={'center'}
-      backgroundSize={'cover'}
-      backgroundRepeat="no-repeat"
+      // __css={{
+      //   background: `linear-gradient(180deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 91.67%), linear-gradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(/img/user/ai-quest.png)`,
+      // }}
+      // backgroundPosition={'center'}
+      // backgroundSize={'cover'}
+      // backgroundRepeat="no-repeat"
     >
+      <StarAnimation />
       <ContentLg>
         {view === QUEST_BEGIN && <QuestBegin onSubmitQuest={onSubmitQuest} />}
         {view === QUEST_SUBMITTED && <QuestCompleted onClaimToken={onClaimToken} />}
