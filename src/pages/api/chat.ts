@@ -17,15 +17,15 @@ export const config = {
 const handler = async (req: Request): Promise<Response> => {
   const body = await req.json()
 
-  const botMessage = await fetch('http://localhost:9001/api/user/bot-messages/query')
+  const botMessage = await fetch('https://ai-quest.vercel.app/api/user/bot-messages/query')
   const botMessageRes = await botMessage.json()
   const message = botMessageRes[0]?.value;
-  console.log(message)
+  // console.log(message)
 
   const messages: ChatGPTMessage[] = [
     {
       role: 'system',
-      content: firstMessage,// process.env.FIRST_MESSAGE firstMessage
+      content: message,// process.env.FIRST_MESSAGE firstMessage
 
     },
   ]
