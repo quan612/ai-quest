@@ -8,44 +8,35 @@ import QuestWrapper from '../shared/QuestWrapper'
 import { debounce } from 'util/index'
 import { Chat } from '@components/shared/Chat/chat'
 
-
 import { type ChatGPTMessage, ChatLine, LoadingChatLine } from '@components/shared/Chat/chatline'
 import { useCookies } from 'react-cookie'
 
 const COOKIE_NAME = 'nextjs-example-ai-chat-gpt3'
 
-
 const QuestBegin = ({ onSubmitQuest }) => {
-
   return (
     <QuestWrapper>
-   
-        <QuestInProgress
-          onCompleted={() => {
-            console.log("on completed")
-            onSubmitQuest()
-          }}
-        />
-     
+      <QuestInProgress
+        onCompleted={() => {
+          console.log('on completed')
+          onSubmitQuest()
+        }}
+      />
     </QuestWrapper>
   )
 }
 
 export default QuestBegin
 
-
-
 const startMessages: ChatGPTMessage[] = [
   {
     role: 'system',
-    content:
-      '',
+    content: '',
   },
 ]
 
-
 const QuestInProgress = ({ onCompleted }) => {
- const [progress, progressSet] = useState(0)
+  const [progress, progressSet] = useState(0)
   const [messages, setMessages] = useState<ChatGPTMessage[]>(startMessages)
 
   const [loading, setLoading] = useState(false)
@@ -54,10 +45,9 @@ const QuestInProgress = ({ onCompleted }) => {
 
   useEffect(() => {
     // send begin message on first render
-    sendMessage("BEGIN")
+    sendMessage('BEGIN')
   }, [])
 
-  
   useEffect(() => {
     if (!cookie[COOKIE_NAME]) {
       // generate a semi random short id
@@ -71,11 +61,10 @@ const QuestInProgress = ({ onCompleted }) => {
     setLoading(true)
 
     const newMessages = [...messages, { role: 'user', content: message } as ChatGPTMessage]
-    setMessages(newMessages) // to not show existing answer
+    // setMessages(newMessages) // to not show existing answer
     const last10messages = newMessages.slice(-10) // remember last 10 messages
 
     try {
-
       const response: Response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
@@ -89,8 +78,9 @@ const QuestInProgress = ({ onCompleted }) => {
 
       // This data is a ReadableStream
       const data = response.body
+
       if (!data) {
-        console.log("no data")
+        console.log('no data')
         return
       }
 
@@ -100,24 +90,44 @@ const QuestInProgress = ({ onCompleted }) => {
 
       let lastMessage = ''
 
+      let turnEnd = false
+
       while (!done) {
-        
         const { value, done: doneReading } = await reader.read()
         done = doneReading
         const chunkValue = decoder.decode(value)
 
+        if (chunkValue === 'Done') {
+          turnEnd = true
+          break
+        }
+
         lastMessage = lastMessage + chunkValue
 
-        setMessages([...newMessages, { role: 'assistant', content: lastMessage } as ChatGPTMessage])  // to not show existing answer
+        setMessages([...newMessages, { role: 'assistant', content: lastMessage } as ChatGPTMessage]) // to not show existing answer
         // setMessages([...messages, { role: 'assistant', content: lastMessage } as ChatGPTMessage])
 
-        const newProgress = progress + 10;
-        progressSet(newProgress)
         answerSet('')
-        
+      }
+      const assistantMsgs = lastMessage
+      console.log('lastMessage', lastMessage)
+
+      const indexOfTurn = lastMessage.indexOf('(Turn')
+      console.log('indexOfTurn', indexOfTurn)
+
+      let newProgress
+      if (indexOfTurn === -1) {
+        newProgress = progress + 8.33
+      } else {
+        newProgress = progress + 8.33
+      }
+
+      progressSet(newProgress)
+
+      if (turnEnd) {
+        onCompleted()
       }
       setLoading(false)
-      
     } catch (err) {
       console.log(err)
       console.log('Edge function returned.')
@@ -141,17 +151,16 @@ const QuestInProgress = ({ onCompleted }) => {
           type="text"
           disabled={loading}
           value={answer || ''}
-       
           placeholder="Type your answer"
           onChange={handleOnChange}
           maxLength={150}
-          onKeyPress={event => {
+          onKeyPress={(event) => {
             if (event.key === 'Enter') {
               sendMessage(answer)
             }
           }}
         />
-        <Flex ml="auto" color="whiteAlpha.300" fontSize={{base:"12px", md:"16px"}}>
+        <Flex ml="auto" color="whiteAlpha.300" fontSize={{ base: '12px', md: '16px' }}>
           {answer?.length || 0}/150
         </Flex>
       </Flex>
@@ -159,14 +168,12 @@ const QuestInProgress = ({ onCompleted }) => {
       <Button
         w={'200px'}
         onClick={() => {
-          console.log(progress)
-          if(progress === 100){
-            console.log("completed")
-            onCompleted()
-          }else{
-            sendMessage(answer)
-          }
-          
+          // if(progress === 100){
+
+          //   onCompleted()
+          // }else{
+          sendMessage(answer)
+          // }
         }}
         isLoading={loading}
         disabled={loading}
@@ -191,8 +198,8 @@ const ScrollableText = ({ message, ...props }) => {
     <Flex
       position="relative"
       w="100%"
-      minH={{base:"40%", lg:"33%"}}
-      maxH={{base:"40%", lg:"none"}}
+      minH={{ base: '40%', lg: '33%' }}
+      maxH={{ base: '40%', lg: 'none' }}
       h="auto"
       // maxH="33%"
       flexDirection={'column'}
@@ -209,23 +216,26 @@ const ScrollableText = ({ message, ...props }) => {
           '::-webkit-scrollbar': {
             // display: 'none',
             width: '6px',
-         
           },
           '&::-webkit-scrollbar-track': {
             background: '#123028',
             border:
               '3px solid transparent' /* Use your background color to overlap the behind layer, making track thinner than thumb */,
             backgroundClip: 'content-box',
-       
           },
           '&::-webkit-scrollbar-thumb': {
             background: '#ED8936',
-            maxHeight: "20px",
-            borderTop: "60px solid #ED8936"
+            maxHeight: '20px',
+            borderTop: '60px solid #ED8936',
           },
         }}
       >
-        <Text fontSize={{base:"14px", md:"18px"}} color="orange.400" textAlign={'left'} whiteSpace={'break-spaces'}>
+        <Text
+          fontSize={{ base: '14px', md: '18px' }}
+          color="orange.400"
+          textAlign={'left'}
+          whiteSpace={'break-spaces'}
+        >
           {message}
         </Text>
       </Flex>

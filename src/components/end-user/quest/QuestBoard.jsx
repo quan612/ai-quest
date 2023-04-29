@@ -1,6 +1,6 @@
-import React, { useRef, useContext, useState, useCallback } from 'react'
+import React, { useCallback } from 'react'
 
-import { Box, Flex, Text, Heading, Button, Input, ButtonGroup, Image } from '@chakra-ui/react'
+import { Flex, Button } from '@chakra-ui/react'
 import { Timer } from '../shared/Timer'
 import { useRouter } from 'next/router'
 import QuestWrapper from '../shared/QuestWrapper'

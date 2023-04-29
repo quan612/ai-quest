@@ -29,6 +29,7 @@ model WhiteList {
   avatar                        String?
   status                        AccountStatus?        @default(PENDING)
   signUpOrigin                  String?               @default("Wallet")
+  questSubmission               UserSubmission?       
 }
 model WhiteListUserData {
   id                            Int           @id @default(autoincrement())
@@ -275,4 +276,11 @@ model BotMessage {
   id                Int                           @id @default(autoincrement())
   key               String                        @unique
   value             String?                       @default("")
+}
+
+model UserSubmission {
+  id                Int                           @id @default(autoincrement())
+  user              WhiteList?                    @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  userId            String?                       @unique 
+  submissions       Json?                 
 }
