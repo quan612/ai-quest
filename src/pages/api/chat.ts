@@ -41,11 +41,13 @@ const handler = async (req: Request): Promise<Response> => {
     ]
     const bodyMessages = body?.messages
 
-    const isFinal = await saveMessage(user, bodyMessages)
+    const isLastTurn = await saveMessage(user, bodyMessages)
 
     if (bodyMessages) {
       messages.push(...bodyMessages)
     }
+
+    console.log("messages", messages)
 
     const payload: OpenAIStreamPayload = {
       model: 'gpt-3.5-turbo',
@@ -60,10 +62,11 @@ const handler = async (req: Request): Promise<Response> => {
       n: 1,
     }
 
-    if (isFinal) {
+    if (isLastTurn) {
       return new Response('Done')
     }
     const stream = await OpenAIStream(payload)
+  
     return new Response(stream)
   } catch (error) {
     console.log(error)
@@ -102,9 +105,15 @@ const saveMessage = async (user, messages) => {
     })
 
     let isLastTurn = false
-    if (lastAssistantMsg.includes('(Turn 12)')) {
-      isLastTurn = true
+
+    if(assisstantMessages.length > 5){
+      console.log("assisstantMessages.length > 5", assisstantMessages)
+      const nextToLastAssistantMsg = assisstantMessages[assisstantMessages.length - 2]?.content
+      if (nextToLastAssistantMsg && nextToLastAssistantMsg.includes('(Turn 12)')) {
+        isLastTurn = true
+      }
     }
+
     return isLastTurn
   } catch (error) {
     console.log(error)

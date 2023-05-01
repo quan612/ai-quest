@@ -1,15 +1,12 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState } from 'react'
 
-import { Box, Flex, Text, Heading, Button, Input, ButtonGroup, Progress } from '@chakra-ui/react'
-import { Timer } from '../shared/Timer'
-import { useRouter } from 'next/router'
+import { Flex, Text, Button, Input, Progress } from '@chakra-ui/react'
+
 import QuestWrapper from '../shared/QuestWrapper'
 
-import { debounce } from 'util/index'
-import { Chat } from '@components/shared/Chat/chat'
-
-import { type ChatGPTMessage, ChatLine, LoadingChatLine } from '@components/shared/Chat/chatline'
+import { type ChatGPTMessage } from '@components/shared/Chat/chatline'
 import { useCookies } from 'react-cookie'
+import getTurnNumber from '@util/getTurnNumber'
 
 const COOKIE_NAME = 'nextjs-example-ai-chat-gpt3'
 
@@ -109,22 +106,23 @@ const QuestInProgress = ({ onCompleted }) => {
 
         answerSet('')
       }
-      const assistantMsgs = lastMessage
-      console.log('lastMessage', lastMessage)
 
-      const indexOfTurn = lastMessage.indexOf('(Turn')
-      console.log('indexOfTurn', indexOfTurn)
+      const turnNumber = getTurnNumber(lastMessage)
 
-      let newProgress
-      if (indexOfTurn === -1) {
-        newProgress = progress + 8.33
+      if (isNaN(turnNumber)) {
+        // do nothing for now
       } else {
-        newProgress = progress + 8.33
+        console.log('turnNumber', turnNumber)
+        if (!turnNumber) {
+          return
+        }
+        const newProgress = getProgress(turnNumber)
+        console.log('newProgress', newProgress)
+        progressSet(newProgress)
       }
 
-      progressSet(newProgress)
-
       if (turnEnd) {
+        setLoading(false)
         onCompleted()
       }
       setLoading(false)
@@ -241,4 +239,8 @@ const ScrollableText = ({ message, ...props }) => {
       </Flex>
     </Flex>
   )
+}
+
+function getProgress(turnNumber) {
+  return (turnNumber / 13) * 100
 }
