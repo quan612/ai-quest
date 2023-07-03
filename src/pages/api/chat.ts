@@ -24,7 +24,9 @@ const handler = async (req: Request): Promise<Response> => {
   const unknownReq = req as unknown
   const nextReq = unknownReq as NextApiRequest
   const token = await getToken({ req: nextReq })
-  // console.log('token', token)
+  console.log('token', token)
+
+
 
   const user = token.sub
 
