@@ -19,12 +19,6 @@ const QuestDetails = ({ session }) => {
   const [view, viewSet] = useState(QUEST_BEGIN) /// QUEST_BEGIN
   const router = useRouter()
 
-  // const {
-  //   codeQuestModal,
-  //   nftOwnQuestModal,
-  //   questSelected,
-  // } = useContext(UserQuestContext)
-
   const onSubmitQuest = useCallback(() => {
     viewSet(QUEST_SUBMITTED)
   }, [])

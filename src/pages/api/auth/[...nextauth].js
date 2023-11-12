@@ -6,6 +6,36 @@ import { prisma } from "@context/PrismaContext";
 import { AccountStatus } from '@prisma/client'
 import { utils } from 'ethers'
 
+const getUserEmail = async (email) => {
+  return await prisma.whiteList.findFirst({
+    where: {
+      email: {
+        mode: 'insensitive',
+        equals: email,
+      },
+
+    },
+  })
+}
+
+const newUserEmail = async (email, hashPassword) => {
+  return await prisma.whiteList.create({
+    data: {
+      email,
+      password: hashPassword,
+      status: AccountStatus.ACTIVE
+
+    },
+  })
+}
+import bcrypt from 'bcryptjs'
+
+export const buildPassword = async (password) => {
+  const salt = await bcrypt.genSalt(10)
+  const passwordHash = await bcrypt.hash(password, salt)
+  return passwordHash
+}
+
 export function getAuthOptions(req) {
   const providers = [
     CredentialsProvider({
@@ -71,6 +101,46 @@ export function getAuthOptions(req) {
           placeholder: '0x0',
           type: 'text',
         },
+      },
+    }),
+    CredentialsProvider({
+      id: 'email',
+      name: 'email',
+      type: 'credentials',
+      credentials: {
+        email: {
+          label: 'Email',
+          type: 'text',
+        },
+        password: {
+          label: 'Password',
+          type: 'password',
+        },
+        moku: {
+          label: 'Moku',
+          type: 'text',
+        },
+      },
+      authorize: async (credentials, req) => {
+        const { email, password } = credentials
+        if (!email || !password) throw new Error('One of more fields are missing')
+
+        const user = await getUserEmail(email)
+
+        if (!user) {
+          const passwordHash = await buildPassword(password)
+          await newUserEmail(email, passwordHash)
+        }
+
+        else {
+          const isPasswordValid = await bcrypt.compare(password, user.password)
+          if (!isPasswordValid) throw new Error('Invalid password')
+        }
+
+        return {
+          id: email,
+          email,
+        }
       },
     }),
   ];

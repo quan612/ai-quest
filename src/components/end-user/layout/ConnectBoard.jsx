@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import {
   Box,
   Flex,
@@ -9,6 +9,7 @@ import {
   Text,
   Image,
   useDisclosure,
+  Input,
 } from '@chakra-ui/react'
 
 import { getCsrfToken, signIn, useSession } from 'next-auth/react'
@@ -21,6 +22,10 @@ import { LayoutWrapper } from './UserLayout'
 import { Heading2XL, Text2XL } from '@components/shared/Typography'
 import { MinimalNavigation } from './Navigation'
 
+const INITIAL = 0
+const WALLET = 1
+const EMAIL = 2
+
 export default function ConnectBoard() {
   const { connect, connectors, error, isLoading, pendingConnector } = useConnect()
 
@@ -30,6 +35,7 @@ export default function ConnectBoard() {
   const { data: session, status } = useSession()
 
   const [showBtn, showBtnSet] = useState(true)
+  const [currentState, setCurrent] = useState(INITIAL)
 
   const loginModal = useDisclosure()
 
@@ -91,34 +97,35 @@ export default function ConnectBoard() {
         >
           <Heading2XL>A journey powered by AI</Heading2XL>
           <Text2XL color={'#fff'} textAlign="center">
-            Connect your wallet to begin.
+            Connect to begin.
           </Text2XL>
           {showBtn && (
-            <Button
-              w={{ base: '192px', md: '192px' }}
-              onClick={() => {
-                loginModal.onOpen()
-                showBtnSet(false)
-                // if (!isConnected) {
-                //   connect({ connector: connectors[0] })
-                // } else {
-                //   handleLogin()
-                // }
-              }}
-              variant="orange"
-            >
-              CONNECT WALLET
-            </Button>
+            <>
+              <Button
+                w={{ base: '192px', md: '192px' }}
+                onClick={() => {
+                  setCurrent(WALLET)
+                  showBtnSet(false)
+                }}
+                variant="orange"
+              >
+                CONNECT WALLET
+              </Button>
+              <Button
+                w={{ base: '192px', md: '192px' }}
+                onClick={() => {
+                  setCurrent(EMAIL)
+                  showBtnSet(false)
+                }}
+                variant="orange"
+              >
+                EMAIL
+              </Button>
+            </>
           )}
 
-          {loginModal?.isOpen && (
-            <UserLogin
-              isOpen={loginModal.isOpen}
-              onClose={() => {
-                loginModal.onClose()
-              }}
-            />
-          )}
+          {currentState === WALLET && <WalletLogin />}
+          {currentState === EMAIL && <EmailLogin />}
         </Flex>
       </Flex>
       <Timer />
@@ -126,7 +133,7 @@ export default function ConnectBoard() {
   )
 }
 
-const UserLogin = () => {
+const WalletLogin = () => {
   const { connect, connectors, error, isLoading, pendingConnector } = useConnect()
   const { address, isConnected } = useAccount()
   return (
@@ -140,8 +147,6 @@ const UserLogin = () => {
             if (!isConnected) {
               connect({ connector: connector })
             } else {
-              //    //   handleLogin()
-              //    // }
             }
           }}
           variant="orange"
@@ -151,6 +156,60 @@ const UserLogin = () => {
           {isLoading && connector.id === pendingConnector?.id && ' (connecting)'}
         </Button>
       ))}{' '}
+    </>
+  )
+}
+
+const EmailLogin = () => {
+  const emailRef = useRef()
+  const passwordRef = useRef()
+
+  const onSignIn = async () => {
+    const email = emailRef?.current?.value
+    const password = passwordRef?.current?.value
+    console.log('email', email)
+    console.log('password', password)
+
+    await signIn('email', {
+      email,
+      password,
+      redirect: false,
+      callbackUrl: '/',
+    }).then(() => {
+      window.location.reload()
+    })
+  }
+
+  return (
+    <>
+      <Input
+        w="500px"
+        ref={emailRef}
+        variant={'main'}
+        type="text"
+        // disabled={loading}
+        placeholder="Email"
+        // onChange={handleOnChange}
+        maxLength={150}
+      />
+      <Input
+        w="500px"
+        ref={passwordRef}
+        variant={'main'}
+        type="text"
+        // disabled={loading}
+        placeholder="Password"
+        maxLength={150}
+      />
+      <Button
+        variant="orange"
+        w={'200px'}
+        onClick={onSignIn}
+        // isLoading={loading}
+        // disabled={loading}
+      >
+        LOGIN
+      </Button>
     </>
   )
 }

@@ -1,4 +1,4 @@
-export const firstMessage = `WWe're going to play a text-based RPG. Read all of the following before asking me anything.
+export const firstMessage = `We're going to play a text-based RPG. Read all of the following before asking me anything.
 
 IMPORTANT RULES:
 

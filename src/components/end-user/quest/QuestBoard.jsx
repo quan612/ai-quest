@@ -23,12 +23,6 @@ const QuestBoard = () => {
       flexDirection={'column'}
       justifyContent={'center'}
       alignItems="center"
-      // __css={{
-      //   background: `linear-gradient(180deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 91.67%), linear-gradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(/img/user/ai-quest.png)`,
-      // }}
-      // backgroundPosition={'center'}
-      // backgroundSize={'cover'}
-      // backgroundRepeat="no-repeat"
       className="quest-board"
     >
       <StarAnimation />
