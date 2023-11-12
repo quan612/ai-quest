@@ -142,12 +142,12 @@ const WalletLogin = () => {
         <Button
           key={connector.id}
           w={{ base: '192px', md: '192px' }}
-          // onClick={() => connect({ connector })}
           onClick={() => {
             if (!isConnected) {
               connect({ connector: connector })
-            } else {
             }
+            // else {
+            // }
           }}
           variant="orange"
         >
