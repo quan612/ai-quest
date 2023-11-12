@@ -55,7 +55,7 @@ const QuestInProgress = ({ onCompleted }) => {
 
   // send message to API /api/chat endpoint
   const sendMessage = async (message: string) => {
-    setLoading(true)
+    // setLoading(true)
 
     const newMessages = [...messages, { role: 'user', content: message } as ChatGPTMessage]
     // setMessages(newMessages) // to not show existing answer
@@ -102,7 +102,6 @@ const QuestInProgress = ({ onCompleted }) => {
         lastMessage = lastMessage + chunkValue
 
         setMessages([...newMessages, { role: 'assistant', content: lastMessage } as ChatGPTMessage]) // to not show existing answer
-        // setMessages([...messages, { role: 'assistant', content: lastMessage } as ChatGPTMessage])
 
         answerSet('')
       }
@@ -129,6 +128,8 @@ const QuestInProgress = ({ onCompleted }) => {
     } catch (err) {
       console.log(err)
       console.log('Edge function returned.')
+      setLoading(false)
+
       if (err) {
         throw new Error(err.statusText)
         console.log(err)

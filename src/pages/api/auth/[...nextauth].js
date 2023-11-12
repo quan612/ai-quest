@@ -24,8 +24,11 @@ const newUserEmail = async (email, hashPassword) => {
       email,
       password: hashPassword,
       status: AccountStatus.ACTIVE
-
     },
+    select: {
+      id: true,
+      userId: true
+    }
   })
 }
 import bcrypt from 'bcryptjs'
@@ -69,12 +72,12 @@ export function getAuthOptions(req) {
 
           const wallet = utils.getAddress(siwe.address);
 
-
           const user = await prisma.whiteList.findUnique({
             where: {
               wallet
             }
           })
+
           if (!user) {
             await prisma.whiteList.create({
               data: {
@@ -85,6 +88,7 @@ export function getAuthOptions(req) {
           }
           return {
             id: wallet,
+            wallet
           };
         } catch (e) {
           return null;
@@ -125,15 +129,20 @@ export function getAuthOptions(req) {
         const { email, password } = credentials
         if (!email || !password) throw new Error('One of more fields are missing')
 
-        const user = await getUserEmail(email)
+        const existingUser = await getUserEmail(email)
 
-        if (!user) {
+        if (!existingUser) {
           const passwordHash = await buildPassword(password)
-          await newUserEmail(email, passwordHash)
+          const newUser = await newUserEmail(email, passwordHash)
+          return {
+            id: email,
+            userId: newUser.userId,
+            email,
+          }
         }
 
         else {
-          const isPasswordValid = await bcrypt.compare(password, user.password)
+          const isPasswordValid = await bcrypt.compare(password, existingUser.password)
           if (!isPasswordValid) throw new Error('Invalid password')
         }
 
@@ -147,6 +156,37 @@ export function getAuthOptions(req) {
 
   return {
     callbacks: {
+      async jwt({ token, user, account, profile, trigger, session }) {
+        //*This callback is called whenever a JSON Web Token is created (i.e. at sign in) or updated
+        if (user) {
+          let userQuery
+          console.log(user)
+          if (account.provider === "Ethereum") {
+            userQuery = await prisma.whiteList.findUnique({
+              where: {
+                wallet: user.wallet
+              }
+            })
+          }
+          if (account.provider === "email") {
+            userQuery = await prisma.whiteList.findFirst({
+              where: {
+                email: {
+                  mode: 'insensitive',
+                  equals: user.email,
+                },
+              },
+            })
+          }
+
+
+          token.provider = account?.provider
+          token.user = getUserInfo(userQuery)
+        }
+
+        console.log(token)
+        return token
+      },
       async session({ session, token }) {
 
         session.address = token.sub;
@@ -185,4 +225,15 @@ export default async function auth(req, res) {
   }
 
   return await NextAuth(req, res, authOptions);
+}
+
+const getUserInfo = (user) => {
+  return {
+    id: user?.id,
+    userId: user?.userId,
+    status: user?.status,
+    username: user?.username,
+    email: user?.email,
+    wallet: user?.wallet,
+  }
 }

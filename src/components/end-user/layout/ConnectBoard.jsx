@@ -170,7 +170,7 @@ const EmailLogin = () => {
     console.log('email', email)
     console.log('password', password)
 
-    await signIn('email', {
+    signIn('email', {
       email,
       password,
       redirect: false,

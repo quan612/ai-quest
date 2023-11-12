@@ -159,6 +159,7 @@ const WalletButton = ({ session }) => {
 
   useOnClickOutside(ref, () => setOpen(false))
 
+  console.log(session)
   return (
     <Flex gap="1rem" direction="column" position={'relative'} w="189px" ref={ref}>
       <Box position="relative" cursor={'pointer'} onClick={() => setOpen(!isOpen)}>
@@ -173,7 +174,7 @@ const WalletButton = ({ session }) => {
           w="100%"
         >
           <Text color="#ED8936">
-            {session?.address?.length > 10 && shortenAddress(session?.address)}
+            {session?.user?.name?.length > 0 && shortenAddress(session?.user?.name)}
           </Text>
         </Flex>
       </Box>

@@ -20,15 +20,14 @@ export const config = {
 const handler = async (req: Request): Promise<Response> => {
 
   const body = await req.json()
-
   const unknownReq = req as unknown
   const nextReq = unknownReq as NextApiRequest
   const token = await getToken({ req: nextReq })
-  console.log('token', token)
 
+  // const user = token.sub
 
-
-  const user = token.sub
+  const user = token?.user as any
+  const userId = user?.userId
 
   try {
     const botMessage = await fetch(`${process.env.AI_QUEST_HOST}/api/user/ai-quest/query-first`)
@@ -43,13 +42,13 @@ const handler = async (req: Request): Promise<Response> => {
     ]
     const bodyMessages = body?.messages
 
-    const isLastTurn = await saveMessage(user, bodyMessages)
+    const isLastTurn = await saveMessage(userId, bodyMessages)
 
     if (bodyMessages) {
       messages.push(...bodyMessages)
     }
 
-    console.log("messages", messages)
+    // console.log("messages", messages)
 
     const payload: OpenAIStreamPayload = {
       model: 'gpt-3.5-turbo',
@@ -88,6 +87,7 @@ const saveMessage = async (user, messages) => {
   const userMessages = messages.filter((m) => m.role === 'user')
   const lastUserMsg = userMessages[userMessages.length - 1].content
 
+
   const requestHeaders: Record<string, string> = {
     'Content-Type': 'application/json',
     Authorization: `Bearer 1234`, // ${process.env.INTERNAL_API_KEY}
@@ -98,6 +98,9 @@ const saveMessage = async (user, messages) => {
     lastAssistantMsg,
     lastUserMsg,
   }
+
+  console.log("saving message", user)
+  console.log("payload", payload)
 
   try {
      await fetch(`${process.env.AI_QUEST_HOST}/api/user/ai-quest/submit`, {

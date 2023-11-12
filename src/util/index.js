@@ -1,8 +1,13 @@
 import Enums from 'enums'
 import axios from 'axios'
 
-export const shortenAddress = (address) =>
-  `${address.slice(0, 5)}...${address.slice(address.length - 4)}`
+export const shortenAddress = (address) => {
+  if (address.length < 10) {
+    return address
+  } else {
+    return `${address.slice(0, 5)}...${address.slice(address.length - 4)}`
+  }
+}
 
 export const debounce = (func, wait) => {
   let timeout
